@@ -4,8 +4,9 @@ from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
 
+# engine = create_engine(settings.SQLALCHEMY_DB_URI, connect_args={})
 engine = create_engine(
-    settings.SQLALCHEMY_DATABASE_URI, connect_args={"check_same_thread": False}
+    settings.SQLALCHEMY_DB_URI, connect_args={"options": "-c client_encoding=utf8"}
 )
 
 SessionLocal = sessionmaker(

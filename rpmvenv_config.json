@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "name": "document-assistant",
+    "version": "1.0.0",
+    "release": "1",
+    "summary": "A simple FastAPI application",
+    "license": "MIT",
+    "url": "https://github.com/sdcaglar/document-assistant"
+  }
+}
