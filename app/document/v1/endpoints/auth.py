@@ -51,4 +51,4 @@ def login(request: Request, login_schema: LoginIn):
             status_code=status.HTTP_400_BAD_REQUEST, detail=errors.invalid_login
         )
 
-    return auth_core.login_user(user, login_schema.email)
+    return auth_core.login_user(user)

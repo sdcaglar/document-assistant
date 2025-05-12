@@ -22,10 +22,8 @@ class AuthCore:
     def get_user_by_email(self, db, email: str, only_active: bool = False):
         return user_repository.get_user_by_email(db, email, only_active)
 
-    def login_user(self, user, email):
-        access_token, expire = secret_helper.create_access_token(
-            {"fullname": user.full_name, "email": email}
-        )
+    def login_user(self, user):
+        access_token, expire = secret_helper.create_access_token({"email": user.email})
         return {"access_token": access_token, "token_type": "bearer"}
 
 

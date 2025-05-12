@@ -33,16 +33,27 @@ class DefaultSettings(BaseSettings):
     JWT_EXPIRES_TIME = 10000
     SECRET_KEY: str = "secret_key"
 
-    # REDIS & Redis URI
+    # REDIS
     REDIS_HOST = "localhost"
     REDIS_PORT = "6379"
     REDIS_PASSWORD: Any = os.getenv("REDIS_PASSWORD", "")
     REDIS_DB = "0"
     REDIS_URI = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 
+    # MONGODB
+    MONGODB_URI: str = "mongodb://localhost:27017"
+    MONGODB_DB_NAME: str = "pdf_management"
+    MONGODB_CONNECT_TIMEOUT_MS: int = 10000
+    MONGODB_SERVER_SELECTION_TIMEOUT_MS: int = 5000
+    MONGODB_SOCKET_TIMEOUT_MS: int = 10000
+    MONGODB_MAX_POOL_SIZE: int = 10
+    MONGODB_MIN_POOL_SIZE: int = 1
+
     # OTHER
     TIMEZONE = "Europe/Istanbul"
     DEVELOPER_MODE = True
     USER_SESSION_STATUS = "access"
+    USER_DISABLED_SESSION_STATUS = "disabled"
+    USER_BLOCKED_SESSION_STATUS = "blocked"
 
     model_config = {"ignored_types": (str, int)}

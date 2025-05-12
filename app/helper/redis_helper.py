@@ -52,19 +52,7 @@ class RedisHelper:
             self.conn.close()
 
 
-class PanelSessionHelper(RedisHelper):
-    def get_session(self, key):
-        return self.get(key)
-
-    def set_session(self, key):
-        self.set(key, self.user_session_status)
-        self.expire(key)
-
-    def delete_session(self, key):
-        return self.delete(key)
-
-
-class WalletSessionHelper(RedisHelper):
+class SessionHelper(RedisHelper):
     def _parse_value_and_expire(self, value):
         if not value:
             return None, None
@@ -117,3 +105,4 @@ class WalletSessionHelper(RedisHelper):
 
 
 redis_helper = RedisHelper()
+session_helper = SessionHelper()

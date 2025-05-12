@@ -1,10 +1,133 @@
-{
-  "metadata": {
-    "name": "document-assistant",
-    "version": "1.0.0",
-    "release": "1",
-    "summary": "A simple FastAPI application",
-    "license": "MIT",
-    "url": "https://github.com/sdcaglar/document-assistant"
-  }
-}
+    {
+        "extensions": {
+            "enabled": [
+                "python_venv",
+                "blocks",
+                "file_permissions"
+            ]
+        },
+        "core": {
+          "group": "Application/System",
+          "license": "Commercial",
+          "name": "moneytolia-api",
+          "summary": "Moneytolia Wallet Api",
+          "version": "0.1.308",
+          "release": "3",
+          "requires": [
+            "python3",
+            " mariadb-libs"
+          ]
+        },
+        "python_venv": {
+            "cmd": "python3 -m venv",
+            "flags": ["--copies"],
+            "name": "venv",
+            "path": "/opt/moneytolia/api",
+            "require_setup_py": false
+        },
+        "blocks": {
+            "desc": [
+                "Moneytolia Wallet Api"
+            ],
+            "install": [
+               "cp -r %{SOURCE0}/app %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/changelog %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/languages %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/migrations %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/alembic.ini %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/run.py %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/run_local.sh %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/localise_sync.py %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/run_celery_beat.sh %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/run_celery_worker.sh %{buildroot}/opt/moneytolia/api",
+               "cp -r %{SOURCE0}/run_celery_flower.sh %{buildroot}/opt/moneytolia/api",
+               "mv %{buildroot}/opt/moneytolia/api/app/config.py %{buildroot}/opt/moneytolia/api/app/config.py.example",
+               "mkdir %{buildroot}/opt/moneytolia/api/logs",
+               "mkdir -p %{buildroot}/etc/systemd/system",
+               "cp -r %{SOURCE0}/moneytolia-api.service %{buildroot}/etc/systemd/system/",
+               "cp -r %{SOURCE0}/moneytolia-celery-worker.service %{buildroot}/etc/systemd/system/",
+               "cp -r %{SOURCE0}/moneytolia-celery-beat.service %{buildroot}/etc/systemd/system/",
+               "cp -r %{SOURCE0}/moneytolia-celery-flower.service %{buildroot}/etc/systemd/system/",
+               "cat %{SOURCE0}/cacert.pem_tobeadded >> %{buildroot}/opt/moneytolia/api/venv/lib/python3.9/site-packages/certifi/cacert.pem",
+               "cp -r %{SOURCE0}/rpmvenv_config.json %{buildroot}/opt/moneytolia/api"
+            ],
+            "files": [
+               "/opt/moneytolia/api",
+               "/opt/moneytolia/api/changelog",
+               "/opt/moneytolia/api/app",
+               "/opt/moneytolia/api/languages",
+               "/opt/moneytolia/api/migrations",
+               "/opt/moneytolia/api/alembic.ini",
+               "/opt/moneytolia/api/run.py",
+               "/opt/moneytolia/api/localise_sync.py",
+               "%attr(744, -, -) /opt/moneytolia/api/run_local.sh",
+               "%attr(744, -, -) /opt/moneytolia/api/run_celery_worker.sh",
+               "%attr(744, -, -) /opt/moneytolia/api/run_celery_flower.sh",
+               "%attr(744, -, -) /opt/moneytolia/api/run_celery_beat.sh",
+               "%attr(400, -, -) /opt/moneytolia/api/app/config.py.example",
+               "%attr(644, -, -) /etc/systemd/system/moneytolia-api.service",
+               "%attr(644, -, -) /etc/systemd/system/moneytolia-celery-worker.service",
+               "%attr(644, -, -) /etc/systemd/system/moneytolia-celery-beat.service",
+               "%attr(644, -, -) /etc/systemd/system/moneytolia-celery-flower.service",
+               "/opt/moneytolia/api/logs"
+            ],
+            "pre": [
+              "BASE=/opt/moneytolia/api",
+              "if [ -d $BASE/languages ]",
+              "then",
+              "echo 'Backing up lacalization files'",
+              "mv $BASE/languages $BASE/languages.orig",
+              "fi"
+            ],
+            "post": [
+              "BASE=/opt/moneytolia/api",
+              "APPUSER=moneytolia-api",
+              "source $BASE/venv/bin/activate",
+              "if [ -f $BASE/app/config.py ]",
+              "then",
+              "echo 'Applying Migrations'",
+              "su - $APPUSER -c \"cd $BASE && . $BASE/venv/bin/activate && alembic upgrade head\" 2>&1 | tee -a /opt/moneytolia/api/logs/alembic.log",
+              "else",
+              "echo config.py is missing.Can not apply migrations. Run python alembic upgrade head manually",
+              "fi",
+              "if [ -d $BASE/languages.orig ]",
+              "then",
+              "echo 'Restoring lacalization files'",
+              "rm -rf $BASE/languages",
+              "mv -f $BASE/languages.orig $BASE/languages",
+              "fi",
+              "systemctl daemon-reload",
+              "systemctl status moneytolia-api.service 2>&1 >/devnull",
+              "if [ $? -eq 0 ] ",
+              "then",
+              "echo Restarting moneytolia-api service.",
+              "systemctl restart moneytolia-api.service",
+              "fi",
+              "systemctl status moneytolia-celery-worker.service 2>&1 >/devnull",
+              "if [ $? -eq 0 ] ",
+              "then",
+              "echo Restarting moneytolia-celery-worker service.",
+              "systemctl restart moneytolia-celery-worker.service",
+              "fi",
+              "systemctl status moneytolia-celery-beat.service 2>&1 >/devnull",
+              "if [ $? -eq 0 ] ",
+              "then",
+              "echo Restarting moneytolia-celery-beat service.",
+              "systemctl restart moneytolia-celery-beat.service",
+              "fi",
+              "systemctl status moneytolia-celery-flower.service 2>&1 >/devnull",
+              "if [ $? -eq 0 ] ",
+              "then",
+              "echo Restarting moneytolia-celery-flower service.",
+              "systemctl restart moneytolia-celery-flower.service",
+              "fi"
+              ]
+        },
+        "file_permissions": {
+             "user": "moneytolia-api",
+             "group": "moneytolia-api",
+             "create_user": true,
+             "create_group": true
+       }
+    }
+
