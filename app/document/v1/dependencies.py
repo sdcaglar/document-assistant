@@ -10,14 +10,12 @@ from app.models.enums import Status
 from app.models.user import User
 
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl="/document" + settings.API_VERSION_STR + "/auth/token/email"
-)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def get_current_user(
     request: Request,
-    token: str = Depends(reusable_oauth2),
+    token: str = Depends(oauth2_scheme),
 ):
     with session_helper:
         session, exp_time = session_helper.get_session(token)

@@ -1,7 +1,7 @@
 
 # Document Chat Assistant
 
-This project is a RESTful API built using FastAPI, PostgreSQL, MongoDB. Users can upload PDF files, extract content from them. User authentication is done via JWT.
+This project is a RESTful API built using FastAPI, PostgreSQL, MongoDB, and Docker. Users can upload PDF files, extract content from them, and chat with the document's content using an LLM-based integration. User authentication is done via JWT, and all actions are logged.
 
 ## 🚀 Getting Started
 
@@ -9,6 +9,7 @@ This project is a RESTful API built using FastAPI, PostgreSQL, MongoDB. Users ca
 - Python 3.8 or higher
 - PostgreSQL
 - MongoDB (for storing PDF data using GridFS)s
+- Docker (optional but recommended)
 
 ### Installation
 
@@ -35,6 +36,19 @@ To run the project locally, use:
    uvicorn main:app --host 127.0.0.1 --port 8000 --reload
    ```
 
+### Running the Project with Docker
+
+1. **Use the Dockerfile and docker-compose.yml (optional) to manage containers:**
+   - The Dockerfile prepares the application environment and dependencies.
+   - The `docker-compose.yml` manages PostgreSQL and MongoDB services.
+
+2. **Run the Docker container:**
+   ```bash
+   docker build -t document-chat-assistant .
+   docker run -p 8000:8000 document-chat-assistant
+   ```
+
+
 ## 🖥 API Usage
 
 ### 1. **User Registration and Login**
@@ -58,6 +72,20 @@ To run the project locally, use:
 
 #### **POST /pdf-select**
 - Selects a PDF for chatting.
+
+### 3. **Chat with LLM**
+
+#### **POST /pdf-chat**
+- Starts a conversation with the selected PDF using Gemini Pro API.
+
+#### **GET /chat-history**
+- Returns the user's chat history.
+
+## 📦 Running with Docker
+
+```bash
+docker-compose up --build
+```
 
 ### License
 

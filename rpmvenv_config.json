@@ -7,6 +7,18 @@
     "license": "MIT",
     "url": "https://github.com/sdcaglar/document-assistant"
   },
+  "core": {
+    "group": "Application/System",
+    "license": "Commercial",
+    "name": "document-assistant-api",
+    "summary": "Document Assistant Api",
+    "version": "1.0.0",
+    "release": "1",
+    "requires": [
+      "python3",
+      " mariadb-libs"
+    ]
+},
   "databases": {
     "postgresql": {
       "dependency": "psycopg2"
