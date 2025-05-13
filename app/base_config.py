@@ -52,8 +52,7 @@ class DefaultSettings(BaseSettings):
     MONGODB_MIN_POOL_SIZE: int = 1
 
     # GEMINI
-    GEMINI_API_KEY: str = "AIzaSyDiQ4bUan99BjoG-1ckIlCC2OmgZBZkGV0s"
-    GEMINI_BASE_URL: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
+    GEMINI_API_KEY: str = "AIzaSyDiQ4bUan99BjoG-AIzaSyACDPq3itsl5jKqTFwLb5hf59UsExyXFEs"
 
     # OTHER
     TIMEZONE = "Europe/Istanbul"

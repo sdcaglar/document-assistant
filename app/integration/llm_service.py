@@ -4,14 +4,11 @@ from google import genai
 
 class LLMService:
     def __init__(self):
-        self.headers = {
-            "Authorization": f"Bearer {settings.GEMINI_API_KEY}",
-            "Content-Type": "application/json",
-        }
+        pass
 
     def chat_with_llm(self, message: str, pdf_content: str):
         try:
-            client = genai.Client(api_key="AIzaSyACDPq3itsl5jKqTFwLb5hf59UsExyXFEs")
+            client = genai.Client(api_key=settings.GEMINI_API_KEY)
             formatted_content = (
                 f"### User Query:\n{message}\n\n" f"### PDF Content:\n{pdf_content}"
             )
