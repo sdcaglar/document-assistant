@@ -6,14 +6,18 @@ import jwt
 from fastapi import HTTPException, status
 
 from app.config import settings
+from app.helper.error_helper import errors
 
 
 class SecretHelper:
     def __init__(self):
-        self.security_context = None
+        pass
 
     @staticmethod
-    def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    def create_access_token(
+        data: dict,
+        expires_delta: Optional[timedelta] = None,
+    ):
         to_jwt_encode = data.copy()
         if expires_delta:
             expire = datetime.now() + expires_delta
@@ -34,14 +38,14 @@ class SecretHelper:
             if data is None:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Could not validate credentials",
+                    detail=errors.invalid_access_token,
                     headers={"WWW-Authenticate": "Bearer"},
                 )
             return data
         except Exception:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not validate credentials",
+                detail=errors.invalid_access_token,
                 headers={"WWW-Authenticate": "Bearer"},
             )
 

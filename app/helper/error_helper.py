@@ -18,7 +18,7 @@ class ErrorCode(IntEnum):
         _("The email address is already registered in the system."),
     )
     user_not_found = 10003, _("User not found.")
-    unsupported_data_type = 10004, _("Unsupported data type.s")
+    unsupported_data_type = 10004, _("Unsupported data types.")
     invalid_access_session = (
         10005,
         _("Session expired due to inactivity. Please log in again."),
@@ -27,7 +27,7 @@ class ErrorCode(IntEnum):
         10006,
         _("Session terminated due to new login from another device."),
     )
-    invalid_access_token = 10007, _("Invalid access token.")
+    invalid_access_token = 10007, _("Could not validate credentials.")
 
 
 errors = ErrorCode

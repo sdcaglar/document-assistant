@@ -1,31 +1,27 @@
-import openai
 from app.config import settings
-from typing import Any, Dict
-
-openai.api_key = settings.OPENAI_API_KEY
+from google import genai
 
 
 class LLMService:
     def __init__(self):
-        pass
+        self.headers = {
+            "Authorization": f"Bearer {settings.GEMINI_API_KEY}",
+            "Content-Type": "application/json",
+        }
 
-    @staticmethod
-    def chat_with_llm(message: str, pdf_content: str) -> Dict[str, Any]:
+    def chat_with_llm(self, message: str, pdf_content: str):
         try:
-            response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are an assistant that has access to the following PDF content.",
-                    },
-                    {"role": "user", "content": pdf_content},
-                    {"role": "user", "content": message},
-                ],
+            client = genai.Client(api_key="AIzaSyACDPq3itsl5jKqTFwLb5hf59UsExyXFEs")
+            formatted_content = (
+                f"### User Query:\n{message}\n\n" f"### PDF Content:\n{pdf_content}"
             )
-            return {"response": response["choices"][0]["message"]["content"]}
+            response = client.models.generate_content(
+                model="gemini-2.0-flash", contents=formatted_content
+            )
+            return response.text
         except Exception as e:
-            return {"error": str(e)}
+            print(f"An error occurred: {e}")
+            return None
 
 
 llm_service = LLMService()

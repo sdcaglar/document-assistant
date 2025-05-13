@@ -14,7 +14,5 @@ async def chat_history(request: Request, user: User = Depends(get_current_active
 
 
 @router.post("/pdf-chat")
-async def pdf_chat(
-    message: str, file_id: str, user: User = Depends(get_current_active_user)
-):
+async def pdf_chat(message, file_id, user: User = Depends(get_current_active_user)):
     return chat_core.pdf_chat(message, file_id, user.id)

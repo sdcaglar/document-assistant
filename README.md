@@ -8,7 +8,7 @@ This project is a RESTful API built using FastAPI, PostgreSQL, MongoDB, and Dock
 ### Requirements
 - Python 3.8 or higher
 - PostgreSQL
-- MongoDB (for storing PDF data using GridFS)s
+- MongoDB (for storing PDF data using GridFS)
 - Docker (optional but recommended)
 
 ### Installation
