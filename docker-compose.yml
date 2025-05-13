@@ -1,0 +1,39 @@
+version: "3.10"
+
+services:
+  api:
+    build: .
+    container_name: document_assistant
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - postgres
+    env_file:
+      - .env
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+  postgres:
+    image: postgres:14
+    container_name: postgredb
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+networks:
+  default:
+    driver: bridge

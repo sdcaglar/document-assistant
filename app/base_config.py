@@ -41,13 +41,18 @@ class DefaultSettings(BaseSettings):
     REDIS_URI = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 
     # MONGODB
-    MONGODB_URI: str = "mongodb://localhost:27017"
-    MONGODB_DB_NAME: str = "pdf_management"
+    MONGODB_HOST = "localhost"
+    MONGODB_PORT = "27017"
+    MONGODB_URI: str = f"mongodb://{MONGODB_HOST}:{MONGODB_PORT}"
+    MONGODB_DB_NAME: str = "myth-db"
     MONGODB_CONNECT_TIMEOUT_MS: int = 10000
     MONGODB_SERVER_SELECTION_TIMEOUT_MS: int = 5000
     MONGODB_SOCKET_TIMEOUT_MS: int = 10000
     MONGODB_MAX_POOL_SIZE: int = 10
     MONGODB_MIN_POOL_SIZE: int = 1
+
+    # GEMINI
+    OPENAI_API_KEY: str = "AIzaSyDiQ4bUan99BjoG-1ckIlCC2OmgZBZkGV0"
 
     # OTHER
     TIMEZONE = "Europe/Istanbul"
